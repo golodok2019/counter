@@ -1,5 +1,5 @@
 import React, {ButtonHTMLAttributes} from 'react';
-import s from '../../styles/counter.module.css'
+import s from '../styles/counter.module.css'
 
 type ButtonPropsType = ButtonHTMLAttributes<HTMLButtonElement>;
 

@@ -1,0 +1,38 @@
+.maxValueInPanel {
+    color: red;
+}
+
+.panelContainer {
+    padding: 30px;
+    font-weight: bold;
+    font-size: 60px;
+    margin: 10px;
+    border: 1px solid black;
+    border-radius: 8px;
+}
+
+.mainContainer {
+    width: 300px;
+    margin: 50px auto 0;
+    border: 1px solid black;
+    border-radius: 8px;
+}
+
+.buttonContainer {
+    border: 1px solid black;
+    margin: 10px;
+    padding: 20px;
+    border-radius: 8px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.button {
+    padding: 3px 10px;
+    font-weight: bold;
+    font-size: 40px;
+    cursor: pointer;
+    border-radius: 8px;
+    background-color: transparent;
+    border: 2px solid black;
+}

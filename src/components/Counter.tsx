@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
-import s from '../../styles/counter.module.css'
-import {CounterPanel} from "../CounterPanel/CounterPanel";
-import {Button} from "../Button/Button";
+import s from '../styles/counter.module.css'
+import {CounterPanel} from "./CounterPanel";
+import {Button} from "./Button";
 
 type CounterPropsType = {
     maxCounterValue: number
