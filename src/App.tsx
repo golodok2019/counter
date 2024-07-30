@@ -1,12 +1,13 @@
 import React from 'react';
 import './App.css';
 import {Counter} from "./components/Counter";
+import {CounterSettings} from "./components/CounterSettings";
+import {CounterWithSettings} from "./components/CounterWithSettings";
 
 function App() {
   return (
     <div className="App">
-      <Counter initCounterValue={0} maxCounterValue={5}/>
-      {/*<Counter initCounterValue={1} maxCounterValue={11}/>*/}
+        <CounterWithSettings/>
     </div>
   );
 }

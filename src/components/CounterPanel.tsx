@@ -1,14 +1,14 @@
 import React from 'react';
 
 type CounterPanelPropsType = {
-    numberValue: number
+    value: string
     className: string
 };
 
-export const CounterPanel = ({numberValue, className}: CounterPanelPropsType) => {
+export const CounterPanel = ({value, className}: CounterPanelPropsType) => {
     return (
         <div className={className}>
-            {numberValue}
+            {value}
         </div>
     );
 };
