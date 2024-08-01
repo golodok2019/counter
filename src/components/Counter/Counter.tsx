@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from 'react';
-import s from '../styles/counter.module.css'
+import s from '../../styles/counter.module.css'
 import {CounterPanel} from "./CounterPanel";
-import {Button} from "./Button";
-import {WorkStatus} from "./CounterWithSettings";
+import {Button} from "../Button";
+import {WorkStatus} from "../CounterWithSettings";
 
 type CounterPropsType = {
     maxCounterValue: number
@@ -34,10 +34,14 @@ export const Counter = ({maxCounterValue, initCounterValue, workStatus}: Counter
                 needSmallText = true;
                 return "enter values and press 'set'"
             case "Error":
+                errorStatus = needSmallText = true;
+                return "Incorrect values!"
             case "ErrorInitValue":
+                errorStatus = needSmallText = true;
+                return "Incorrect init value!"
             case "ErrorMaxValue":
                 errorStatus = needSmallText = true;
-                return "Incorrect value!"
+                return "Incorrect max value!"
             case "Stable":
                 return counterValue.toString()
         }

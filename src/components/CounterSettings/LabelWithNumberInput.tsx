@@ -1,6 +1,6 @@
 import React from 'react';
 import { v1 } from 'uuid';
-import s from "../styles/counter.module.css";
+import s from "../../styles/counter.module.css";
 
 type Props = {
     labelText: string

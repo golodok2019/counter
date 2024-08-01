@@ -1,7 +1,7 @@
-import React, {useState} from 'react';
-import s from "../styles/counter.module.css";
-import {Button} from "./Button";
-import {WorkStatus} from "./CounterWithSettings";
+import React, {useEffect, useState} from 'react';
+import s from "../../styles/counter.module.css";
+import {Button} from "../Button";
+import {WorkStatus} from "../CounterWithSettings";
 import {LabelWithNumberInput} from "./LabelWithNumberInput";
 
 export type CounterSettingsPropsType = {
@@ -22,11 +22,18 @@ export const CounterSettings = ({
                                     changeWorkStatus
                                 }: CounterSettingsPropsType) => {
 
-    const [initCounterValueLocal, setInitCounterValueLocal] = useState(initCounterValue);
-    const [maxCounterValueLocal, setMaxCounterValueLocal] = useState(maxCounterValue);
+    const [initCounterValueLocal, setInitCounterValueLocal] = useState(0);
+    const [maxCounterValueLocal, setMaxCounterValueLocal] = useState(1);
+
+    useEffect(() => {
+        setMaxCounterValueLocal(maxCounterValue)
+    }, [maxCounterValue])
+
+    useEffect(() => {
+        setInitCounterValueLocal(initCounterValue)
+    }, [initCounterValue])
 
     const initCounterValueOnChangeHandler = (value: number) => {
-
         if (workStatus !== 'Changing') {
             changeWorkStatus('Changing')
         }
@@ -70,7 +77,6 @@ export const CounterSettings = ({
 
     return (
         <div className={s.mainContainer}>
-
             <div className={s.panelContainer}>
                 <LabelWithNumberInput labelText={'max value:'} value={maxCounterValueLocal}
                                       onChange={maxCounterValueOnChangeHandler}
