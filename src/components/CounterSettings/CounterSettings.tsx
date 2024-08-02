@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import s from "../../styles/counter.module.css";
 import {Button} from "../Button";
-import {WorkStatus} from "../CounterWithSettings";
 import {LabelWithNumberInput} from "./LabelWithNumberInput";
 
 export type CounterSettingsPropsType = {
@@ -9,21 +8,22 @@ export type CounterSettingsPropsType = {
     initCounterValue: number
     maxCounterValueOnChange: (value: number) => void
     initCounterValueOnChange: (value: number) => void
-    changeWorkStatus: (status: WorkStatus) => void
-    workStatus: WorkStatus
+    showSettingsReducer: () => void
 };
+
+type WorkStatus =  'Stable' | 'Changing' |'Error' | 'ErrorMaxValue' | 'ErrorInitValue';
 
 export const CounterSettings = ({
                                     maxCounterValue,
                                     initCounterValue,
                                     initCounterValueOnChange,
                                     maxCounterValueOnChange,
-                                    workStatus,
-                                    changeWorkStatus
+                                    showSettingsReducer
                                 }: CounterSettingsPropsType) => {
 
     const [initCounterValueLocal, setInitCounterValueLocal] = useState(0);
     const [maxCounterValueLocal, setMaxCounterValueLocal] = useState(1);
+    const [workStatus, setWorkStatus] = useState<WorkStatus>('Stable')
 
     useEffect(() => {
         setMaxCounterValueLocal(maxCounterValue)
@@ -35,7 +35,7 @@ export const CounterSettings = ({
 
     const initCounterValueOnChangeHandler = (value: number) => {
         if (workStatus !== 'Changing') {
-            changeWorkStatus('Changing')
+            setWorkStatus('Changing')
         }
 
         setInitCounterValueLocal(value);
@@ -44,7 +44,7 @@ export const CounterSettings = ({
 
     const maxCounterValueOnChangeHandler = (value: number) => {
         if (workStatus !== 'Changing') {
-            changeWorkStatus('Changing')
+            setWorkStatus('Changing')
         }
 
         setMaxCounterValueLocal(value);
@@ -54,23 +54,24 @@ export const CounterSettings = ({
     const validateCounterValues = (initValue: number, maxValue: number) => {
 
         if (initValue >= maxValue || (initValue < 0 && maxValue < 0)) {
-            changeWorkStatus('Error')
+            setWorkStatus('Error')
             return
         }
 
         if (initValue < 0) {
-            changeWorkStatus('ErrorInitValue')
+            setWorkStatus('ErrorInitValue')
             return
         }
 
         if (maxValue < 0) {
-            changeWorkStatus('ErrorMaxValue')
+            setWorkStatus('ErrorMaxValue')
             return
         }
     }
 
     const saveOnClickHandler = () => {
-        changeWorkStatus('Stable')
+        setWorkStatus('Stable')
+        showSettingsReducer()
         initCounterValueOnChange(initCounterValueLocal)
         maxCounterValueOnChange(maxCounterValueLocal)
     }

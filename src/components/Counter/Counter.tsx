@@ -2,16 +2,15 @@ import React, {useEffect, useState} from 'react';
 import s from '../../styles/counter.module.css'
 import {CounterPanel} from "./CounterPanel";
 import {Button} from "../Button";
-import {WorkStatus} from "../CounterWithSettings";
 
 type CounterPropsType = {
     maxCounterValue: number
     initCounterValue: number
-    workStatus: WorkStatus
+    showSettingsReducer: () => void
 }
 
-export const Counter = ({maxCounterValue, initCounterValue, workStatus}: CounterPropsType) => {
-    let errorStatus = false, needSmallText = false;
+export const Counter = ({maxCounterValue, initCounterValue, showSettingsReducer}: CounterPropsType) => {
+    let errorStatus = false;
     const [counterValue, setCounterValue] = useState<number>(0);
 
     useEffect(() => {
@@ -28,38 +27,19 @@ export const Counter = ({maxCounterValue, initCounterValue, workStatus}: Counter
         setCounterValue(initCounterValue)
     }
 
-    const getValueToDisplay = (): string => {
-        switch (workStatus) {
-            case "Changing":
-                needSmallText = true;
-                return "enter values and press 'set'"
-            case "Error":
-                errorStatus = needSmallText = true;
-                return "Incorrect values!"
-            case "ErrorInitValue":
-                errorStatus = needSmallText = true;
-                return "Incorrect init value!"
-            case "ErrorMaxValue":
-                errorStatus = needSmallText = true;
-                return "Incorrect max value!"
-            case "Stable":
-                return counterValue.toString()
-        }
-    }
-
     const getClassName = (): string => {
         return s.panelContainer + ' '
-            + (needSmallText ? s.smallFontSize : s.normalFontSize) + ' '
             + (counterValue === maxCounterValue || errorStatus ? s.errorInPanel : '')
     }
 
     return (
         <div className={s.mainContainer}>
-            <CounterPanel value={getValueToDisplay()}
+            <CounterPanel value={counterValue.toString()}
                           className={getClassName()}/>
             <div className={s.buttonContainer + ' ' + s.justifySpaceBetween}>
                 <Button title={'inc'} onClick={incrementCounterValue} disabled={counterValue === maxCounterValue}/>
                 <Button title={'reset'} onClick={resetCounterValue} disabled={counterValue === initCounterValue}/>
+                <Button title={'set'} onClick={showSettingsReducer}/>
             </div>
         </div>
     );
