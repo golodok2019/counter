@@ -1,7 +1,8 @@
 import React, {useEffect, useState} from 'react';
-import s from "../../styles/counter.module.css";
-import {Button} from "../Button";
-import {LabelWithNumberInput} from "./LabelWithNumberInput";
+import s from '../../styles/counter.module.css';
+import {MaterialButton} from '../MaterialButton';
+import {NumberInput} from './NumberInput';
+import {Confirm} from '../Confirm';
 
 export type CounterSettingsPropsType = {
     maxCounterValue: number
@@ -11,7 +12,7 @@ export type CounterSettingsPropsType = {
     showSettingsReducer: () => void
 };
 
-type WorkStatus =  'Stable' | 'Changing' |'Error' | 'ErrorMaxValue' | 'ErrorInitValue';
+type WorkStatus = 'Stable' | 'Changing' | 'Error' | 'ErrorMaxValue' | 'ErrorInitValue' | 'InConfirm';
 
 export const CounterSettings = ({
                                     maxCounterValue,
@@ -23,7 +24,7 @@ export const CounterSettings = ({
 
     const [initCounterValueLocal, setInitCounterValueLocal] = useState(0);
     const [maxCounterValueLocal, setMaxCounterValueLocal] = useState(1);
-    const [workStatus, setWorkStatus] = useState<WorkStatus>('Stable')
+    const [workStatus, setWorkStatus] = useState<WorkStatus>('Stable');
 
     useEffect(() => {
         setMaxCounterValueLocal(maxCounterValue)
@@ -76,22 +77,58 @@ export const CounterSettings = ({
         maxCounterValueOnChange(maxCounterValueLocal)
     }
 
+    const backOnClickHandler = () => {
+        if (workStatus !== 'Stable') {
+            setWorkStatus('InConfirm')
+        } else {
+            showSettingsReducer()
+        }
+    }
+
+    const getErrorText = (isMaxInput: boolean): string => {
+        switch (workStatus) {
+            case 'Error':
+                return 'Incorrect value'
+            case 'ErrorMaxValue':
+                return isMaxInput ? 'Incorrect max value' : ''
+            case 'ErrorInitValue':
+                return isMaxInput ? '' : 'Incorrect init value'
+            default:
+                return ''
+        }
+    }
+
+    const handleAgreeConfirm = () => {
+        setWorkStatus('Stable')
+        setInitCounterValueLocal(initCounterValue)
+        setMaxCounterValueLocal(maxCounterValue)
+        showSettingsReducer()
+    }
+
+    const handleCloseConfirm = () => {
+        setWorkStatus('Changing')
+        validateCounterValues(initCounterValueLocal, maxCounterValueLocal)
+    }
+
     return (
         <div className={s.mainContainer}>
             <div className={s.panelContainer}>
-                <LabelWithNumberInput labelText={'max value:'} value={maxCounterValueLocal}
-                                      onChange={maxCounterValueOnChangeHandler}
-                                      inputClassName={workStatus === 'Error' || workStatus === 'ErrorMaxValue' ?
-                                          s.inputError : s.input}/>
-                <LabelWithNumberInput labelText={'start value:'} value={initCounterValueLocal}
-                                      onChange={initCounterValueOnChangeHandler}
-                                      inputClassName={workStatus === 'Error' || workStatus === 'ErrorInitValue' ?
-                                          s.inputError : s.input}/>
+                <NumberInput labelText={'max value'} value={maxCounterValueLocal}
+                             onChange={maxCounterValueOnChangeHandler}
+                             errorText={getErrorText(true)}/>
+                <NumberInput labelText={'start value'} value={initCounterValueLocal}
+                             onChange={initCounterValueOnChangeHandler}
+                             errorText={getErrorText(false)}/>
             </div>
 
-            <div className={s.buttonContainer + ' ' + s.justifyCenter}>
-                <Button title={'set'} disabled={workStatus !== 'Changing'} onClick={saveOnClickHandler}/>
+            <div className={s.buttonContainer}>
+                <MaterialButton title={'set'} disabled={workStatus !== 'Changing'} onClick={saveOnClickHandler}/>
+                <MaterialButton title={'back'} onClick={backOnClickHandler}/>
             </div>
+
+            <Confirm title={'Confirmation of leaving'} disagreeTitle={'Back'} agreeTitle={'Leave'}
+                     content={'The installed information will not be saved'} open={workStatus === 'InConfirm'}
+                     handleAgree={handleAgreeConfirm} handleClose={handleCloseConfirm}/>
         </div>
     );
 };

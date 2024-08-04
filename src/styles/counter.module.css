@@ -28,25 +28,8 @@
     padding: 20px;
     border-radius: 8px;
     display: flex;
-    gap: 10px
-}
-
-.justifySpaceBetween {
-    justify-content: space-between;
-}
-
-.justifyCenter {
-    justify-content: center;
-}
-
-.button {
-    padding: 3px 10px;
-    font-weight: bold;
-    font-size: 40px;
-    cursor: pointer;
-    border-radius: 8px;
-    background-color: transparent;
-    border: 2px solid black;
+    gap: 10px;
+    justify-content: space-around;
 }
 
 .counterWithSettingsContainer {
@@ -59,13 +42,4 @@
     justify-content: space-between;
     font-size: 20px;
     gap: 40px;
-}
-
-.inputError {
-    background-color: rgba(255, 0, 0, 0.5);
-    border: 1px solid red;
-}
-
-.input {
-    border: 1px solid black;
 }

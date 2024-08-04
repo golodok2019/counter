@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import s from '../../styles/counter.module.css'
 import {CounterPanel} from "./CounterPanel";
-import {Button} from "../Button";
+import {MaterialButton} from "../MaterialButton";
 
 type CounterPropsType = {
     maxCounterValue: number
@@ -37,9 +37,9 @@ export const Counter = ({maxCounterValue, initCounterValue, showSettingsReducer}
             <CounterPanel value={counterValue.toString()}
                           className={getClassName()}/>
             <div className={s.buttonContainer + ' ' + s.justifySpaceBetween}>
-                <Button title={'inc'} onClick={incrementCounterValue} disabled={counterValue === maxCounterValue}/>
-                <Button title={'reset'} onClick={resetCounterValue} disabled={counterValue === initCounterValue}/>
-                <Button title={'set'} onClick={showSettingsReducer}/>
+                <MaterialButton title={'inc'} onClick={incrementCounterValue} disabled={counterValue === maxCounterValue}/>
+                <MaterialButton title={'reset'} onClick={resetCounterValue} disabled={counterValue === initCounterValue}/>
+                <MaterialButton title={'set'} onClick={showSettingsReducer}/>
             </div>
         </div>
     );
