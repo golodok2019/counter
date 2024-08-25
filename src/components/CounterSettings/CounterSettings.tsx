@@ -3,27 +3,25 @@ import s from '../../styles/counter.module.css';
 import {MaterialButton} from '../MaterialButton';
 import {NumberInput} from './NumberInput';
 import {Confirm} from '../Confirm';
+import {useDispatch, useSelector} from 'react-redux';
+import {AppRootStateType} from '../../reducers/store';
+import {saveCounterMaxValueAC} from '../../reducers/counterMaxValueReducer';
+import {saveCounterInitValueAC} from '../../reducers/counterInitValueReducer';
 
 export type CounterSettingsPropsType = {
-    maxCounterValue: number
-    initCounterValue: number
-    maxCounterValueOnChange: (value: number) => void
-    initCounterValueOnChange: (value: number) => void
     showSettingsReducer: () => void
 };
 
 type WorkStatus = 'Stable' | 'Changing' | 'Error' | 'ErrorMaxValue' | 'ErrorInitValue' | 'InConfirm';
 
-export const CounterSettings = ({
-                                    maxCounterValue,
-                                    initCounterValue,
-                                    initCounterValueOnChange,
-                                    maxCounterValueOnChange,
-                                    showSettingsReducer
-                                }: CounterSettingsPropsType) => {
+export const CounterSettings = ({showSettingsReducer}: CounterSettingsPropsType) => {
+
+    const initCounterValue = useSelector<AppRootStateType, number>(state => state.counterInitValueReducer)
+    const maxCounterValue = useSelector<AppRootStateType, number>(state => state.counterMaxValueReducer)
+    const dispatch = useDispatch();
 
     const [initCounterValueLocal, setInitCounterValueLocal] = useState(0);
-    const [maxCounterValueLocal, setMaxCounterValueLocal] = useState(1);
+    const [maxCounterValueLocal, setMaxCounterValueLocal] = useState(0);
     const [workStatus, setWorkStatus] = useState<WorkStatus>('Stable');
 
     useEffect(() => {
@@ -72,9 +70,9 @@ export const CounterSettings = ({
 
     const saveOnClickHandler = () => {
         setWorkStatus('Stable')
+        dispatch(saveCounterMaxValueAC(maxCounterValueLocal))
+        dispatch(saveCounterInitValueAC(initCounterValueLocal))
         showSettingsReducer()
-        initCounterValueOnChange(initCounterValueLocal)
-        maxCounterValueOnChange(maxCounterValueLocal)
     }
 
     const backOnClickHandler = () => {

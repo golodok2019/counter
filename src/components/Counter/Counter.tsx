@@ -2,15 +2,19 @@ import React, {useEffect, useState} from 'react';
 import s from '../../styles/counter.module.css'
 import {CounterPanel} from "./CounterPanel";
 import {MaterialButton} from "../MaterialButton";
+import {useSelector} from 'react-redux';
+import {AppRootStateType} from '../../reducers/store';
 
 type CounterPropsType = {
-    maxCounterValue: number
-    initCounterValue: number
     showSettingsReducer: () => void
 }
 
-export const Counter = ({maxCounterValue, initCounterValue, showSettingsReducer}: CounterPropsType) => {
+export const Counter = ({showSettingsReducer}: CounterPropsType) => {
     let errorStatus = false;
+
+    const initCounterValue = useSelector<AppRootStateType, number>(state => state.counterInitValueReducer)
+    const maxCounterValue = useSelector<AppRootStateType, number>(state => state.counterMaxValueReducer)
+
     const [counterValue, setCounterValue] = useState<number>(0);
 
     useEffect(() => {
