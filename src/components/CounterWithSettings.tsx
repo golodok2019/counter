@@ -3,9 +3,6 @@ import {CounterSettings} from './CounterSettings/CounterSettings';
 import {Counter} from './Counter/Counter';
 import s from '../styles/counter.module.css';
 
-const initValueKey = 'initCounterValue';
-const maxValueKey = 'maxCounterValue';
-
 export const CounterWithSettings = () => {
     const [showSettings, showSettingsReducer] = useReducer((v) => !v, false);
 
